@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 
-	json "github.com/goccy/go-json"
+	"encoding/json" // json "github.com/goccy/go-json"
 )
 
 // Error represents a JSON-RPC error.

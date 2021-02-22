@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	json "github.com/goccy/go-json"
+	"encoding/json" // json "github.com/goccy/go-json"
 )
 
 const (
@@ -100,7 +100,7 @@ func (s *rawStream) Write(ctx context.Context, msg Message) (int64, error) {
 	default:
 	}
 
-	data, err := json.MarshalNoEscape(msg)
+	data, err := json.Marshal(msg)
 	if err != nil {
 		return 0, fmt.Errorf("marshaling message: %w", err)
 	}
@@ -199,7 +199,7 @@ func (s *stream) Write(ctx context.Context, msg Message) (int64, error) {
 	default:
 	}
 
-	data, err := json.MarshalNoEscape(msg)
+	data, err := json.Marshal(msg)
 	if err != nil {
 		return 0, fmt.Errorf("marshaling message: %w", err)
 	}

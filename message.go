@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 
-	json "github.com/goccy/go-json"
+	"encoding/json" // json "github.com/goccy/go-json"
 )
 
 // Message is the interface to all JSON-RPC message types.
@@ -103,7 +103,7 @@ func (c Call) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements json.Unmarshaler.
 func (c *Call) UnmarshalJSON(data []byte) error {
 	var req wireRequest
-	if err := json.UnmarshalNoEscape(data, &req); err != nil {
+	if err := json.Unmarshal(data, &req); err != nil {
 		return fmt.Errorf("unmarshaling call: %w", err)
 	}
 
@@ -182,7 +182,7 @@ func (r Response) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements json.Unmarshaler.
 func (r *Response) UnmarshalJSON(data []byte) error {
 	var resp wireResponse
-	if err := json.UnmarshalNoEscape(data, &resp); err != nil {
+	if err := json.Unmarshal(data, &resp); err != nil {
 		return fmt.Errorf("unmarshaling jsonrpc response: %w", err)
 	}
 
@@ -277,7 +277,7 @@ func (n Notification) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON implements json.Unmarshaler.
 func (n *Notification) UnmarshalJSON(data []byte) error {
 	var req wireRequest
-	if err := json.UnmarshalNoEscape(data, &req); err != nil {
+	if err := json.Unmarshal(data, &req); err != nil {
 		return fmt.Errorf("unmarshaling notification: %w", err)
 	}
 
@@ -292,7 +292,7 @@ func (n *Notification) UnmarshalJSON(data []byte) error {
 // DecodeMessage decodes data to Message.
 func DecodeMessage(data []byte) (Message, error) {
 	var msg combined
-	if err := json.UnmarshalNoEscape(data, &msg); err != nil {
+	if err := json.Unmarshal(data, &msg); err != nil {
 		return nil, fmt.Errorf("unmarshaling jsonrpc message: %w", err)
 	}
 
@@ -342,7 +342,7 @@ func DecodeMessage(data []byte) (Message, error) {
 
 // marshalInterface marshal obj to json.RawMessage.
 func marshalInterface(obj interface{}) (json.RawMessage, error) {
-	data, err := json.MarshalNoEscape(obj)
+	data, err := json.Marshal(obj)
 	if err != nil {
 		return json.RawMessage{}, fmt.Errorf("failed to marshal json: %w", err)
 	}
